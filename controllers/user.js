@@ -3,7 +3,7 @@ const User = require("../models/user");
 
 function signUp(req, res) {
     const user = new User();
-    const {name, lastname, email, password, repeatPassword} = req.body;
+    const {name, lastname, email, password, repeatPassword, privacyPolicy} = req.body;
     if (!name) {
         res.status(404).send({message: "Nombre es obligatorio."});
         return;
@@ -14,6 +14,10 @@ function signUp(req, res) {
     }
     if (!email) {
         res.status(404).send({message: "Email es obligatorio."});
+        return;
+    }
+    if (!privacyPolicy) {
+        res.status(404).send({message: "Debe aceptar política de privacidad."});
         return;
     }
     if (!password || !repeatPassword) {
@@ -31,16 +35,17 @@ function signUp(req, res) {
         }
         user.name = name;
         user.lastname = lastname;
-        user.email = email;
+        user.email = email.toLowerCase();
         user.role = "admin";
         user.active = false;
+        user.privacyPolicy = privacyPolicy;
         user.password = hash;
         user.save((err, userSave) => {
             if (err) {
                 res.status(500).send({message: "Usuario ya existe."});
                 return;
             }
-            res.status(200).send({message: `¡Usuario ${userSave.name} ${userSave.lastname} creado!`});
+            res.status(200).send({user: userSave});
         })
     })
 }

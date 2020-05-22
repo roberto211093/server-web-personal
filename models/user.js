@@ -10,7 +10,8 @@ const userSchema =  Schema({
     },
     password: String,
     role: String,
-    active: Boolean
+    active: Boolean,
+    privacyPolicy: Boolean
 });
 
 module.exports = mongoose.model("user", userSchema);
