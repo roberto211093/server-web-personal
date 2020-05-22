@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt-nodejs");
+const jwt = require("../services/jwt");
 const User = require("../models/user");
 
-function signUp(req, res) {
+const signUp = (req, res) => {
     const user = new User();
     const {name, lastname, email, password, repeatPassword, privacyPolicy} = req.body;
     if (!name) {
@@ -50,6 +51,49 @@ function signUp(req, res) {
     })
 }
 
+const signIn = (req, res) => {
+    const params = req.body;
+    const email = params.email.toLowerCase();
+    const password = params.password;
+    if (!email) {
+        res.status(404).send({message: "Email es obligatorio."});
+        return;
+    }
+    if (!password) {
+        res.status(404).send({message: "Contraseña es obligatoria."});
+        return;
+    }
+    User.findOne({email}, (err, userStored) => {
+        if (err) {
+            res.status(500).send({message: "Error del servidor."});
+            return;
+        }
+        if (!userStored) {
+            res.status(404).send({message: "Usuario no existe."});
+            return;
+        }
+        bcrypt.compare(password, userStored.password, (err, passwordOk) => {
+            if (err) {
+                res.status(500).send({message: "Error del servidor."});
+                return;
+            }
+            if (!passwordOk) {
+                res.status(404).send({message: "Contraseña incorrecta."});
+                return;
+            }
+            if (!userStored.active) {
+                res.status(404).send({message: "No tienes permiso de Admin."});
+                return;
+            }
+            res.status(200).send({
+                accessToken: jwt.createAccessToken(userStored),
+                refreshToken: jwt.createRefreshToken(userStored)
+            });
+        })
+    })
+}
+
 module.exports = {
-    signUp
+    signUp,
+    signIn
 }
