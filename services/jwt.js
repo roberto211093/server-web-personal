@@ -9,6 +9,8 @@ exports.createAccessToken = (user) => {
         lastname: user.lastname,
         email: user.email,
         role: user.role,
+        active: user.active,
+        privacyPolicy: user.privacyPolicy,
         createToken: moment().unix(),
         exp: moment().add(3, "hours").unix()
     };
