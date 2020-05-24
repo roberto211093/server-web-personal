@@ -93,7 +93,18 @@ const signIn = (req, res) => {
     })
 }
 
+const getUsers = (req, res) => {
+    User.find().then( users => {
+        if (!users) {
+            res.status(404).send({message: "No existen usuarios"});
+        } else {
+            res.status(200).send({users: users});
+        }
+    })
+}
+
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    getUsers
 }
