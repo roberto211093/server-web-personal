@@ -5,6 +5,7 @@ const {SECRET_KEY} = require("../config");
 exports.createAccessToken = (user) => {
     const payload = {
         id: user._id,
+        avatar: user.avatar,
         name: user.name,
         lastname: user.lastname,
         email: user.email,

@@ -1,5 +1,5 @@
 const express = require("express");
-const bodyParse = require("body-parser");
+const bodyParser = require("body-parser");
 
 const app = express();
 const {API_VERSION} = require("./config");
@@ -8,8 +8,8 @@ const {API_VERSION} = require("./config");
 const authRoutes = require('./routers/auth')
 const userRoutes = require('./routers/user')
 
-app.use(bodyParse.urlencoded({extended: false}))
-app.use(bodyParse.json())
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 
 // Configure Header HTTP
 app.use((req, res, next) => {

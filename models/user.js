@@ -11,6 +11,7 @@ const userSchema =  Schema({
     password: String,
     role: String,
     active: Boolean,
+    avatar: String,
     privacyPolicy: Boolean
 });
 
