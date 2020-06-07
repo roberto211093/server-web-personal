@@ -172,8 +172,21 @@ const getAvatar = (req, res) => {
 
 const putUpdateUser = async (req, res) => {
     const params = req.params;
-    const userData = req.body;
+    let userData = req.body;
+    userData.email = req.body.email.toLowerCase();
     try {
+        if (userData.password) {
+            let hashedPassword = await new Promise((resolve) => {
+                bcrypt.hash(userData.password, null, null, (err, hash) => {
+                  if (err) {
+                    res.status(500).send({message: "Error al intentar encriptar la clave."});
+                    return;
+                  }
+                  resolve(hash)
+                });
+            });
+            userData.password = hashedPassword;
+        }
         const userDB = await User.findByIdAndUpdate({_id: params.id}, userData);
         if (!userDB) {
             res.status(404).send({message: "Usuario no existe."});
