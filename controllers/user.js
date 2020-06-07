@@ -199,6 +199,22 @@ const putUpdateUser = async (req, res) => {
     }
 }
 
+const putActivateUser = async (req, res) => {
+    const {id} = req.params;
+    const {active} = req.body;
+    try {
+        const userDB = await User.findByIdAndUpdate(id, {active});
+        if (!userDB) {
+            res.status(404).send({message: "Usuario no existe."});
+            return;
+        }
+        res.status(200).send({user: {...userDB._doc, active}});
+    }
+    catch (error) {
+        res.status(500).send({message: "Error del servidor.", err: error.message});
+    }
+}
+
 module.exports = {
     postSignUp,
     postSignIn,
@@ -206,5 +222,6 @@ module.exports = {
     getUsersActive,
     putUpdateAvatar,
     getAvatar,
-    putUpdateUser
+    putUpdateUser,
+    putActivateUser
 }

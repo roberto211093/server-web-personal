@@ -10,8 +10,6 @@ mongoose.connect(`mongodb://${IP_SERVER}:${DB_PORT}/${DB_NAME}`,
         if (err) {
             throw err;
         } else {
-            console.log("conexion exitosa");
-
             app.listen(PORT_SERVER, () => {
                 console.log("########################");
                 console.log("### conexion exitosa ###");
