@@ -215,6 +215,21 @@ const putActivateUser = async (req, res) => {
     }
 }
 
+const deleteUser = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const userDelete = await User.findByIdAndRemove(id);
+        if (!userDelete) {
+            res.status(404).send({message: "Usuario no existe."});
+            return;
+        }
+        res.status(200).send({user: userDelete});
+    }
+    catch (error) {
+        res.status(500).send({message: "Error del servidor.", err: error.message});
+    }
+}
+
 module.exports = {
     postSignUp,
     postSignIn,
@@ -223,5 +238,6 @@ module.exports = {
     putUpdateAvatar,
     getAvatar,
     putUpdateUser,
-    putActivateUser
+    putActivateUser,
+    deleteUser
 }

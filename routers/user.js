@@ -14,5 +14,6 @@ api.put("/update-avatar/:id", [md_auth.ensureAuth, md_update_user], UserControll
 api.get("/get-avatar/:avatarName", UserController.getAvatar);
 api.put("/update-user/:id", [md_auth.ensureAuth], UserController.putUpdateUser);
 api.put("/activate-user/:id", [md_auth.ensureAuth], UserController.putActivateUser);
+api.delete("/delete-user/:id", [md_auth.ensureAuth], UserController.deleteUser);
 
 module.exports = api;
