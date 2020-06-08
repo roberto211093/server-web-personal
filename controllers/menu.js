@@ -36,6 +36,21 @@ const addMenu = async (req, res) => {
     }
 }
 
+const getMenus = async (req, res) => {
+    try {
+        const menusDB = await Menu.find().sort({order: "asc"})
+        if (!menusDB) {
+            res.status(404).send({message: "No existen menus"});
+        } else {
+            res.status(200).send({menus: menusDB});
+        }
+    }
+    catch (error) {
+        res.status(500).send({message: "Error del servidor.", err: error.message});
+    }
+}
+
 module.exports = {
-    addMenu
+    addMenu,
+    getMenus
 }
