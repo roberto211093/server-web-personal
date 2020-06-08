@@ -50,6 +50,22 @@ const getMenus = async (req, res) => {
     }
 }
 
+const putUpdateMenu = async (req, res) => {
+    const {id} = req.params;
+    let menuUpdate = req.body;
+    try {
+        const menuDB = await Menu.findByIdAndUpdate({_id: id}, menuUpdate);
+        if (!menuDB) {
+            res.status(404).send({message: "Menu no existe."});
+            return;
+        }
+        res.status(200).send({menu: menuUpdate});
+    }
+    catch (error) {
+        res.status(500).send({message: "Error del servidor.", err: error.message});
+    }
+}
+
 const deleteMenu = async (req, res) => {
     const {id} = req.params;
     try {
@@ -68,5 +84,6 @@ const deleteMenu = async (req, res) => {
 module.exports = {
     postAddMenu,
     getMenus,
+    putUpdateMenu,
     deleteMenu
 }

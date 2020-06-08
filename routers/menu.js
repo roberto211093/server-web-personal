@@ -5,6 +5,7 @@ const api = express.Router();
 
 api.post("/add-menu", [md_auth.ensureAuth], MenuController.postAddMenu);
 api.get("/get-menus", MenuController.getMenus);
+api.put("/update-menu/:id", [md_auth.ensureAuth], MenuController.putUpdateMenu);
 api.delete("/delete-menu/:id", [md_auth.ensureAuth], MenuController.deleteMenu);
 
 module.exports = api;
