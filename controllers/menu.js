@@ -1,6 +1,6 @@
 const Menu = require("../models/menu");
 
-const addMenu = async (req, res) => {
+const postAddMenu = async (req, res) => {
     const menu = new Menu();
     const {title, url, order, active} = req.body;
     try {
@@ -50,7 +50,23 @@ const getMenus = async (req, res) => {
     }
 }
 
+const deleteMenu = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const menuDelete = await Menu.findByIdAndRemove(id);
+        if (!menuDelete) {
+            res.status(404).send({message: "Menu no existe."});
+            return;
+        }
+        res.status(200).send({menu: menuDelete});
+    }
+    catch (error) {
+        res.status(500).send({message: "Error del servidor.", err: error.message});
+    }
+}
+
 module.exports = {
-    addMenu,
-    getMenus
+    postAddMenu,
+    getMenus,
+    deleteMenu
 }
