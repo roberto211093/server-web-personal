@@ -66,6 +66,22 @@ const putUpdateMenu = async (req, res) => {
     }
 }
 
+const putActivateMenu = async (req, res) => {
+    const {id} = req.params;
+    const {active} = req.body;
+    try {
+        const menuDB = await Menu.findByIdAndUpdate(id, {active});
+        if (!menuDB) {
+            res.status(404).send({message: `Error al intentar ${active ? "activar" : "desactivar"} el menu.`});
+            return;
+        }
+        res.status(200).send({menu: {...menuDB._doc, active}});
+    }
+    catch (error) {
+        res.status(500).send({message: "Error del servidor.", err: error.message});
+    }
+}
+
 const deleteMenu = async (req, res) => {
     const {id} = req.params;
     try {
@@ -85,5 +101,6 @@ module.exports = {
     postAddMenu,
     getMenus,
     putUpdateMenu,
+    putActivateMenu,
     deleteMenu
 }
