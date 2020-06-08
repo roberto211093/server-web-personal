@@ -1,9 +1,35 @@
 const Menu = require("../models/menu");
 
 const addMenu = async (req, res) => {
+    const menu = new Menu();
+    const {title, url, order, active} = req.body;
     try {
-        console.log("addMenu");
-               res.status(200).send({message: "Funciona"});
+        if (!title) {
+            res.status(404).send({message: "Titulo es obligatorio."});
+            return;
+        }
+        if (!url) {
+            res.status(404).send({message: "Url es obligatorio."});
+            return;
+        }
+        if (!order) {
+            res.status(404).send({message: "Orden es obligatorio."});
+            return;
+        }
+        if (!active) {
+            res.status(404).send({message: "Active es obligatorio."});
+            return;
+        }
+        menu.title = title;
+        menu.url = url;
+        menu.order = order
+        menu.active = active;
+        const menuDB = await menu.save()
+        if (!menuDB) {
+            res.status(404).send({message: "Error al crear menu."});
+        } else {
+            res.status(200).send({menu: menuDB});
+        }
     }
     catch (error) {
         res.status(500).send({message: "Error del servidor.", err: error.message});
