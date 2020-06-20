@@ -25,7 +25,6 @@ const postSendMail = (req, res) => {
         from: "rafa.acosta.sistemas@gmail.com", // sender address
         to: "rafael.r.acosta.m.93@gmail.com", // list of receivers
         subject: "Web Personal", // Subject line
-        text: "Mensaje desde rafaelacosta.cl", // plain text body
         html: `<p><b>Mensaje desde rafaelacosta.cl</b></p>
         <div style="width: 300px;margin: 0 auto;margin-top:30px;">
             <div style="padding:10px;border: 3px solid #000;border-bottom:none;">
